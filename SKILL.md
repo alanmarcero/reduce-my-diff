@@ -16,15 +16,27 @@ Sources: [Andrej Karpathy's coding guidelines](https://github.com/multica-ai/and
 The skill runs on PRs or on an entire repo.
 
 - **PRs**: when the user gives one or more PRs, review only the lines those PRs change. Don't report or change code outside their diffs. For a stacked PR, compare against its base branch, not main.
-- **Entire repo**: when the user asks for a repo, review all the code in it. Apply rules 2 to 7 to the code as it is, and rule 1 to the features it has.
+- **Entire repo**: when the user asks for a repo, review all the code in it. Apply rules 2 to 7 to the code as it is, and Feature Consolidation (rule 1) to the features it has.
 - **No target**: review the current branch diff against main.
 
-## 1. Simplify the requirement before writing code
+## 1. Feature Consolidation
 
-Not every instruction is a separate, binding requirement. Given requirements A, A^, B and B^, a human weighs the tradeoffs and builds one shared feature. An LLM builds four features, each with its own tests, then says it can't simplify further.
+A human who gets requirements A, A^, B and B^ weighs the tradeoffs and builds one shared feature. An LLM builds four features, each with its own tests, then says it can't simplify the code any further. This rule reduces the diff through tradeoffs.
 
-- Look for a simpler requirement that covers the same need. If it makes the implementation substantially smaller, propose it and get approval before building. Don't bring up small simplifications.
+Not every requirement is binding. Some requirements can be removed, because the code complexity they need is not worth the risk they cover.
+
+Always run this rule, on every scope. Nothing changes as a result until the user approves.
+
+- List the requirements the code implements, one per feature, code path, guard, field or endpoint. Include requirements the code added that nobody asked for.
+- Group the requirements that overlap. For each group, propose one shared feature that covers the need, and one set of tests for it.
+- For each requirement, ask whether its code is worth the risk it covers. If the risk is small or unlikely and the code is large, propose to remove the requirement.
+- For each proposal, give the lines it removes, what the user loses, and the risk it leaves.
+- Present the proposals and wait. Don't build, edit or remove anything for this rule until the user approves that proposal.
+- Don't bring up small simplifications. Propose only a change that makes the implementation substantially smaller.
 - If a simpler approach exists, say so. Push back when it's warranted.
+
+Other rules for requirements:
+
 - State your assumptions. If the request has more than one reading, present them instead of picking one silently. If something is unclear, stop, name what's confusing, and ask.
 - Define done as a check you can run: a failing test that reproduces the bug, or tests that pass before and after a refactor. Stop when the check passes. For multi-step work, write a short plan with a check per step.
 
@@ -89,10 +101,12 @@ For each PR, branch or repo, list the lines of code that the rules above would r
 - Start each item with the number of lines it removes, for example `−34`. Sort the items from most lines removed to fewest.
 - Mark an item that changes a requirement, a feature or behavior as needing approval.
 - End with two totals: the lines removed without approval, and the lines removed if the user approves every marked item.
+- After the totals, add a Feature Consolidation section with the proposals from rule 1, sorted by lines removed. Every report has this section. If there are no proposals, say so.
 
 ## Applying fixes
 
 - Get the user's approval before any change to a requirement, a feature or behavior. This includes removing a feature, a code path, a guard, a field or an endpoint, and replacing a feature with a simpler one. Ask for each item. Approval for one item doesn't apply to the others.
+- Feature Consolidation proposals always need approval.
 - An instruction such as "fix everything" or "apply all" applies only the items that don't change a feature. Skip each item that needs approval, and list the skipped items in the summary.
 - Stay inside the scope. On PRs, edit only the lines those PRs change.
 - Run the tests before and after. If a fix makes a test fail, revert that fix and report it.
