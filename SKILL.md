@@ -70,6 +70,18 @@ Run the sweep after each change, not only at the end. Remove what the branch add
 
 Stop the sweep when the remaining edits would be broad rewrites. A focused edit that removes lines beats a rewrite that moves them.
 
+## Report format
+
+By default, report only. Don't edit files, commit, push or post comments unless the user asks for it.
+
+For each PR or branch, list the lines of code that the rules above would remove:
+
+- Start with the PR link and its current size, for example `+127 / −3`.
+- Give one item per removal, with the file, the lines, and the rule it breaks.
+- Start each item with the number of lines it removes, for example `−34`. Sort the items from most lines removed to fewest.
+- Mark an item that changes behavior as needing a decision before anyone removes it.
+- End with the total number of lines removed.
+
 ## Guardrails
 
 - Keep behavior unchanged unless fixing a clear bug. Tests pass before and after the sweep.

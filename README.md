@@ -33,6 +33,8 @@ cp SKILL.md ~/.claude/skills/reduce-my-diff/SKILL.md
 
 Run it before implementing to scope the work, or on a finished branch to sweep its diff against main.
 
+Pass one or more PR URLs to get a report for each PR. The report lists the lines the skill would remove, sorted from most lines removed to fewest. By default the skill only reports; it doesn't edit, push or comment unless you ask.
+
 ## Sources
 
 This skill consolidates three published sources with my own rules from PR reviews:
