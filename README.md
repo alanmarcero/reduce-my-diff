@@ -2,7 +2,7 @@
 
 A skill for AI coding agents that keeps pull request diffs as small as the task allows. Coding agents tend to build more than was asked, reformat code they didn't need to touch, and leave behind comments, defensive checks and extra tests. This skill gives the agent rules to follow before, during and after implementing, ordered by how much diff each one saves:
 
-1. Feature Consolidation: weigh tradeoffs to merge overlapping requirements into one feature, and propose removing requirements whose code is not worth the risk. It always runs; nothing changes until you approve.
+1. Feature Consolidation: weigh tradeoffs to merge overlapping requirements into one feature, flag a new feature where an existing one in the repo could be expanded, and propose removing requirements whose code is not worth the risk. It always runs; nothing changes until you approve.
 2. Build only what was asked
 3. Change existing code before adding new code
 4. Touch only what you must

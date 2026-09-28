@@ -15,7 +15,7 @@ Sources: [Andrej Karpathy's coding guidelines](https://github.com/multica-ai/and
 
 The skill runs on PRs or on an entire repo.
 
-- **PRs**: when the user gives one or more PRs, review only the lines those PRs change. Don't report or change code outside their diffs. For a stacked PR, compare against its base branch, not main.
+- **PRs**: when the user gives one or more PRs, review only the lines those PRs change. Don't report or change code outside their diffs. The exception is Feature Consolidation (rule 1), which also reads the rest of the repo. For a stacked PR, compare against its base branch, not main.
 - **Entire repo**: when the user asks for a repo, review all the code in it. Apply rules 2 to 7 to the code as it is, and Feature Consolidation (rule 1) to the features it has.
 - **No target**: review the current branch diff against main.
 
@@ -27,8 +27,11 @@ Not every requirement is binding. Some requirements can be removed, because the 
 
 Always run this rule, on every scope. Nothing changes as a result until the user approves.
 
+When the input is PRs, consider both the PRs and the entire repo. Read the repo for existing features that do the same job as the new code.
+
 - List the requirements the code implements, one per feature, code path, guard, field or endpoint. Include requirements the code added that nobody asked for.
-- Group the requirements that overlap. For each group, propose one shared feature that covers the need, and one set of tests for it.
+- Group the requirements that overlap, in the PRs and across the PRs and the repo. For each group, propose one shared feature that covers the need, and one set of tests for it.
+- If a PR adds a new feature where an existing feature in the repo could be expanded instead, tell the user. Name the existing feature and its file, and say what the expansion would need.
 - For each requirement, ask whether its code is worth the risk it covers. If the risk is small or unlikely and the code is large, propose to remove the requirement.
 - For each proposal, give the lines it removes, what the user loses, and the risk it leaves.
 - Present the proposals and wait. Don't build, edit or remove anything for this rule until the user approves that proposal.
