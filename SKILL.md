@@ -101,6 +101,7 @@ Organize the report by PR. Give each PR, branch or repo its own section, and lis
 
 - Start with the PR link and its current size, for example `+127 / −3`. For a repo, start with the repo name and the files reviewed.
 - Give one item per removal, with the filename, the lines, and the rule it breaks. If the removal spans more than one file, write `<x> files` (for example `3 files`) instead of the filenames.
+- Give line numbers as they are in the file on the PR's head branch, written `path:line`. Never use a line's position in the `gh pr diff` output. Count from the `@@ +start` hunk header, or grep the file on the head branch. For a deleted line, give its number on the base branch and say so.
 - Start each item with the number of lines it removes, for example `−34`. Sort the items from most lines removed to fewest.
 - Mark an item that changes a requirement, a feature or behavior as needing approval.
 - End with two totals: the lines removed without approval, and the lines removed if the user approves every marked item.
