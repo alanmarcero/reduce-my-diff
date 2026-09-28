@@ -9,9 +9,7 @@ Every changed line should trace directly to the request. The rules are ordered b
 
 These rules favor caution over speed. For a trivial change, use judgment.
 
-If a `local.md` file exists next to this file, read it and follow it too. It holds private, repo-specific additions to these rules.
-
-Sources: [Andrej Karpathy's coding guidelines](https://github.com/multica-ai/andrej-karpathy-skills), Anthropic's [code-simplifier](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier), Cursor's [deslop](https://github.com/cursor/plugins/blob/main/cursor-team-kit/skills/deslop/SKILL.md), and [Alan Marcero](https://github.com/alanmarcero)'s own rules from PR reviews.
+Sources: [Andrej Karpathy's coding guidelines](https://github.com/multica-ai/andrej-karpathy-skills), Anthropic's [code-simplifier](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier), Cursor's [deslop](https://github.com/cursor/plugins/blob/main/cursor-team-kit/skills/deslop/SKILL.md), and personal rules from PR reviews.
 
 ## 1. Simplify the requirement before writing code
 
