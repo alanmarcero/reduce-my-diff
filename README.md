@@ -33,7 +33,7 @@ cp SKILL.md ~/.claude/skills/reduce-my-diff/SKILL.md
 
 Run it before implementing to scope the work, or on a finished branch to sweep its diff against main.
 
-Pass one or more PR URLs to get a report for each PR, scoped to only the lines those PRs change. Or name a repo to review all of its code. The report lists the lines the skill would remove, sorted from most lines removed to fewest. By default the skill only reports; it doesn't edit, push or comment unless you ask.
+Pass one or more PR URLs to get a report for each PR, scoped to only the lines those PRs change. Or name a repo to review all of its code. The report has one section per PR. Each item lists the lines the skill would remove and the file they are in, or `<x> files` when it spans several, sorted from most lines removed to fewest. By default the skill only reports; it doesn't edit, push or comment unless you ask.
 
 A change to a requirement or a feature always needs your approval. An instruction such as "fix everything" applies only the fixes that don't change a feature, and lists the rest for you to decide.
 

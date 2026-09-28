@@ -97,10 +97,10 @@ Stop the sweep when the remaining edits would be broad rewrites. A focused edit 
 
 By default, report only. Don't edit files, commit, push or post comments unless the user asks for it.
 
-For each PR, branch or repo, list the lines of code that the rules above would remove:
+Organize the report by PR. Give each PR, branch or repo its own section, and list the lines of code that the rules above would remove:
 
 - Start with the PR link and its current size, for example `+127 / −3`. For a repo, start with the repo name and the files reviewed.
-- Give one item per removal, with the file, the lines, and the rule it breaks.
+- Give one item per removal, with the filename, the lines, and the rule it breaks. If the removal spans more than one file, write `<x> files` (for example `3 files`) instead of the filenames.
 - Start each item with the number of lines it removes, for example `−34`. Sort the items from most lines removed to fewest.
 - Mark an item that changes a requirement, a feature or behavior as needing approval.
 - End with two totals: the lines removed without approval, and the lines removed if the user approves every marked item.
