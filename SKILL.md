@@ -1,6 +1,6 @@
 ---
 name: reduce-my-diff
-description: Keep a change's diff as small as the task allows. Use before implementing, while implementing, and as a sweep of the branch diff against main before opening or updating a PR.
+description: Keep a change's diff as small as the task allows. Use before implementing, while implementing, as a sweep of the branch diff against main before opening or updating a PR, or as a sweep of one or more PRs or an entire repo.
 ---
 
 # Reduce my diff
@@ -10,6 +10,14 @@ Every changed line should trace directly to the request. The rules are ordered b
 These rules favor caution over speed. For a trivial change, use judgment.
 
 Sources: [Andrej Karpathy's coding guidelines](https://github.com/multica-ai/andrej-karpathy-skills), Anthropic's [code-simplifier](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier), Cursor's [deslop](https://github.com/cursor/plugins/blob/main/cursor-team-kit/skills/deslop/SKILL.md), and personal rules from PR reviews.
+
+## Scope
+
+The skill runs on PRs or on an entire repo.
+
+- **PRs**: when the user gives one or more PRs, review only the lines those PRs change. Don't report or change code outside their diffs. For a stacked PR, compare against its base branch, not main.
+- **Entire repo**: when the user asks for a repo, review all the code in it. Apply rules 2 to 7 to the code as it is, and rule 1 to the features it has.
+- **No target**: review the current branch diff against main.
 
 ## 1. Simplify the requirement before writing code
 
@@ -74,13 +82,20 @@ Stop the sweep when the remaining edits would be broad rewrites. A focused edit 
 
 By default, report only. Don't edit files, commit, push or post comments unless the user asks for it.
 
-For each PR or branch, list the lines of code that the rules above would remove:
+For each PR, branch or repo, list the lines of code that the rules above would remove:
 
-- Start with the PR link and its current size, for example `+127 / −3`.
+- Start with the PR link and its current size, for example `+127 / −3`. For a repo, start with the repo name and the files reviewed.
 - Give one item per removal, with the file, the lines, and the rule it breaks.
 - Start each item with the number of lines it removes, for example `−34`. Sort the items from most lines removed to fewest.
-- Mark an item that changes behavior as needing a decision before anyone removes it.
-- End with the total number of lines removed.
+- Mark an item that changes a requirement, a feature or behavior as needing approval.
+- End with two totals: the lines removed without approval, and the lines removed if the user approves every marked item.
+
+## Applying fixes
+
+- Get the user's approval before any change to a requirement, a feature or behavior. This includes removing a feature, a code path, a guard, a field or an endpoint, and replacing a feature with a simpler one. Ask for each item. Approval for one item doesn't apply to the others.
+- An instruction such as "fix everything" or "apply all" applies only the items that don't change a feature. Skip each item that needs approval, and list the skipped items in the summary.
+- Stay inside the scope. On PRs, edit only the lines those PRs change.
+- Run the tests before and after. If a fix makes a test fail, revert that fix and report it.
 
 ## Guardrails
 
