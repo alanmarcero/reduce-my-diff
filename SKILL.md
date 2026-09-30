@@ -16,7 +16,7 @@ Sources: [Andrej Karpathy's coding guidelines](https://github.com/multica-ai/and
 The skill runs on PRs or on an entire repo.
 
 - **PRs**: when the user gives one or more PRs, review only the lines those PRs change. Don't report or change code outside their diffs. The exception is Feature Consolidation (rule 1), which also reads the rest of the repo. For a stacked PR, compare against its base branch, not main.
-- **Entire repo**: when the user asks for a repo, review all the code in it. Apply rules 2 to 7 to the code as it is, and Feature Consolidation (rule 1) to the features it has.
+- **Entire repo**: when the user asks for a repo, review all the code in it. Apply rules 2 to 7 to the code as it is, and Feature Consolidation (rule 1) to the features it has. Also look for a dependency that the standard library or the platform replaces, an interface with one implementation, a factory with one product, a wrapper that only delegates, and a flag or config value that nothing sets.
 - **No target**: review the current branch diff against main.
 
 ## 1. Feature Consolidation
@@ -47,18 +47,22 @@ Other rules for requirements:
 
 - No features, flexibility or configuration that wasn't requested.
 - No error handling for cases that can't happen. Avoid try/catch unless the code path needs it.
-- No abstraction for code used once. Don't add a one- or two-line function unless it will be used 4+ times.
+- No abstraction for code used once. Don't add a one- or two-line function, no matter how often it repeats. For a repeated value, extract a named constant. Extract a function only for 3 or more lines of real logic.
 - If you wrote 200 lines and it could be 50, rewrite it. Would a senior engineer call it overcomplicated?
 
 ## 3. Change existing code before adding new code
 
+- Read the code that the change touches and trace the real flow before you choose an approach. The smallest change in the wrong place is a second bug.
 - Before you write new code, ask these questions in order. Stop at the first yes:
   1. Does this need to exist? If not, don't build it (see 2).
   2. Does the codebase already have it? Reuse that helper, util or pattern.
-  3. Does the standard library do it? Use it.
-  4. Does the platform do it? For example `<input type="date">`, CSS, or a database constraint.
-  5. Does a dependency that is already installed do it? Use it. Don't add a new dependency.
-  6. If all answers are no, write the minimum code that works.
+  3. Can data change instead of code? For example a definition, a template or a config value. A data change adds no new schema, API or engine branch.
+  4. Does the standard library do it? Use it.
+  5. Does the platform do it? For example `<input type="date">`, CSS, or a database constraint.
+  6. Does a dependency that is already installed do it? Use it. Don't add a new dependency.
+  7. If all answers are no, write the minimum code that works.
+- When two options have the same size, choose the one that is correct on edge cases.
+- Before you add a field that claims parity with another system, search that system for the name. A value that the other system computes and never stores is not parity.
 - For a bug fix, find every caller of the function you change and fix the shared function once. One guard there is a smaller diff than one guard per caller. A fix on only the path the ticket names leaves the other callers broken.
 - Modify what the repo already has instead of adding a parallel path next to it.
 - Reuse the repo's conventions. For example, use one metric key with an outcome tag instead of three keys when the neighbouring code does it that way.
@@ -84,6 +88,7 @@ Don't change whitespace on any line you aren't otherwise changing, unless a lint
 
 ## 6. Keep test changes small
 
+- New branching logic needs at least one assertion that fails if the logic breaks. Extend an existing test first.
 - Add assertions to existing tests that already drive the path. Write a new test only for a case no existing test sets up.
 - Delete a test that your change made redundant. If a new assertion in an existing test covers the fallback, the separate fallback test is dead.
 - Never test a mock of the thing you changed. A suite that mocks the module under test only proves the mock works; find where the real logic is covered.
@@ -92,8 +97,8 @@ Don't change whitespace on any line you aren't otherwise changing, unless a lint
 
 Run the sweep after each change, not only at the end. Remove what the branch added that the codebase wouldn't:
 
-- Every comment the change adds, unless the user asks for one. The code and the test names carry the meaning.
-- Defensive checks or try/catch blocks that are unusual for that code path.
+- Every comment the change adds that restates the code, tells the story of the plan, or is longer than 2 lines. Keep a 1-2 line comment that explains why. For a deliberate shortcut, keep one line that names its limit and when to upgrade it.
+- Defensive checks or try/catch blocks that are unusual for that code path, unless they protect one of the items in Guardrails.
 - Casts to `any` that only exist to get past a type error.
 - Deep nesting in code the branch added. Flatten it with early returns. Leave existing code alone (see 4).
 - Duplicate or redundant logic the branch added. Consolidate it, and give new code clear names.
@@ -127,6 +132,7 @@ Organize the report by PR. Give each PR, branch or repo its own section, and lis
 ## Guardrails
 
 - Keep behavior unchanged unless fixing a clear bug. Tests pass before and after the sweep.
+- Never remove input validation at a trust boundary, error handling that prevents data loss, a security check, or basic accessibility. This applies also when the check looks unusual for the code path.
 - Choose clarity over brevity. Don't shrink the diff with clever or dense code: no nested ternaries, dense one-liners, or functions that combine unrelated concerns. Keep an abstraction that already helps organize the code.
 - Keep the final summary to 1-3 sentences, and mention only changes that affect how someone reads the code.
 - The rules are working when diffs have fewer unrelated changes, fewer rewrites come from overcomplication, and clarifying questions come before implementation instead of after mistakes.
