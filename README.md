@@ -39,9 +39,10 @@ A change to a requirement or a feature always needs your approval. An instructio
 
 ## Sources
 
-This skill consolidates three published sources with my own rules from PR reviews:
+This skill consolidates four published sources with my own rules from PR reviews:
 
 - [Andrej Karpathy's coding guidelines](https://github.com/multica-ai/andrej-karpathy-skills): think before coding, simplicity first, surgical changes, goal-driven execution.
 - Anthropic's [code-simplifier](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier) plugin: preserve behavior, limit changes to modified code, keep clarity ahead of brevity.
 - Cursor's [deslop](https://github.com/cursor/plugins/blob/main/cursor-team-kit/skills/deslop/SKILL.md) skill: remove comments, defensive checks and `any` casts that the branch added.
+- [Ponytail](https://github.com/dietrichgebert/ponytail): check the codebase, the standard library, the platform and installed dependencies before writing new code; fix a bug once in the shared function; tag each finding in a short report.
 - My own rules: simplify overlapping requirements into one feature, leave whitespace alone, avoid restructuring code to add one signal, reuse repo conventions, and fold new assertions into existing tests.

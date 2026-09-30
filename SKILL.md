@@ -9,7 +9,7 @@ Every changed line should trace directly to the request. The rules are ordered b
 
 These rules favor caution over speed. For a trivial change, use judgment.
 
-Sources: [Andrej Karpathy's coding guidelines](https://github.com/multica-ai/andrej-karpathy-skills), Anthropic's [code-simplifier](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier), Cursor's [deslop](https://github.com/cursor/plugins/blob/main/cursor-team-kit/skills/deslop/SKILL.md), and personal rules from PR reviews.
+Sources: [Andrej Karpathy's coding guidelines](https://github.com/multica-ai/andrej-karpathy-skills), Anthropic's [code-simplifier](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier), Cursor's [deslop](https://github.com/cursor/plugins/blob/main/cursor-team-kit/skills/deslop/SKILL.md), [Ponytail](https://github.com/dietrichgebert/ponytail), and personal rules from PR reviews.
 
 ## Scope
 
@@ -52,6 +52,14 @@ Other rules for requirements:
 
 ## 3. Change existing code before adding new code
 
+- Before you write new code, ask these questions in order. Stop at the first yes:
+  1. Does this need to exist? If not, don't build it (see 2).
+  2. Does the codebase already have it? Reuse that helper, util or pattern.
+  3. Does the standard library do it? Use it.
+  4. Does the platform do it? For example `<input type="date">`, CSS, or a database constraint.
+  5. Does a dependency that is already installed do it? Use it. Don't add a new dependency.
+  6. If all answers are no, write the minimum code that works.
+- For a bug fix, find every caller of the function you change and fix the shared function once. One guard there is a smaller diff than one guard per caller. A fix on only the path the ticket names leaves the other callers broken.
 - Modify what the repo already has instead of adding a parallel path next to it.
 - Reuse the repo's conventions. For example, use one metric key with an outcome tag instead of three keys when the neighbouring code does it that way.
 - Don't add code only to support a frozen legacy path. Tag the new path and let existing filters exclude the untagged rows.
@@ -105,6 +113,7 @@ Organize the report by PR. Give each PR, branch or repo its own section, and lis
 - Start each item with the number of lines it removes, for example `−34`. Sort the items from most lines removed to fewest.
 - Mark an item that changes a requirement, a feature or behavior as needing approval.
 - End with two totals: the lines removed without approval, and the lines removed if the user approves every marked item.
+- For a quick pass, the user can ask for the short form: one line per item, `−<lines> <tag>: <what to cut>. <replacement>. path:line`. The tags are `delete` (dead or speculative code), `stdlib` (the standard library does it), `native` (the platform does it), `yagni` (an abstraction with one use) and `shrink` (the same logic in fewer lines).
 - After the totals, add a Feature Consolidation section with the proposals from rule 1, sorted by lines removed. Every report has this section. If there are no proposals, say so.
 
 ## Applying fixes
