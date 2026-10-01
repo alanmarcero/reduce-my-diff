@@ -98,6 +98,20 @@ After each change, remove what the branch added that the codebase wouldn't:
 
 Stop when the remaining edits are broad rewrites. A focused edit that removes lines beats a rewrite that moves them.
 
+## 8. Run `/simplify`
+
+Run `/simplify` after rule 7. Otherwise it simplifies lines that the sweep then deletes. It is built into Claude Code and has no file on disk, so don't conclude it is missing from `~/.claude/skills`. Don't skip it or replace it with the manual reviews below. Its efficiency fixes are the one exception to the performance scope above.
+
+`/simplify` edits files, so run it only when you implement or apply fixes. In report-only mode, do its reviews by hand and report each finding in the report format.
+
+On another harness, run its equivalent (for example Gemini's code review or Codex's refactor mode). If none exists, do these reviews by hand:
+
+1. Reuse: rule 3.
+2. Quality: redundant state, parameter sprawl, copy-paste, leaky abstractions, stringly-typed code, unnecessary comments.
+3. Efficiency: redundant computations, missed concurrency, hot-path bloat, recurring no-op updates, memory concerns.
+
+Fix actionable findings directly. Note and skip false positives.
+
 ## Report format
 
 By default, report only. Don't edit files, commit, push or post comments unless the user asks.

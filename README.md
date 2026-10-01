@@ -10,8 +10,9 @@ A skill for AI coding agents that keeps pull request diffs as small as the task 
 5. Leave whitespace alone
 6. Keep test changes small
 7. Sweep the branch diff against main
+8. Run `/simplify` after the sweep, or its reviews by hand on another harness
 
-Guardrails keep behavior unchanged, protect tuning values the real environment needs, and put readable, boring code ahead of line count. Correctness, security and performance findings are out of scope; send them to a normal code review.
+Guardrails keep behavior unchanged, protect tuning values the real environment needs, and put readable, boring code ahead of line count. Correctness, security and performance findings are out of scope, except the efficiency fixes `/simplify` makes; send the rest to a normal code review.
 
 ## Install
 
