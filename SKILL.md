@@ -117,10 +117,11 @@ Give each PR, branch or repo its own section:
   - `yagni`: an abstraction with one implementation, config that nothing sets, or a layer with one caller. Say what to inline.
   - `shrink`: the same logic in fewer lines. Show the shorter form.
   - `churn`: whitespace, formatting or restructuring that the task didn't need. Replacement: revert it.
-- Put each finding in one of two groups, and sort each group from most lines to fewest:
+- Put each finding in one of three groups, and sort each group from most lines to fewest:
   - **No impact**: behavior stays the same.
-  - **Possible / confirmed impact**: the cut may change behavior, or removes a requirement, feature, code path, guard, field or endpoint. End the line with `Possible:` or `Confirmed:` and what changes.
-- End the section with the totals: `no impact: −<N>`, `possible / confirmed impact: −<M>`, and `net: −<N+M> lines possible.` For a repo, add `−<D> deps possible`.
+  - **Possible impact**: you can't verify the effect, but the cut might change behavior. End the line with `Possible:` and what might change.
+  - **Confirmed impact**: you read the code, and the cut changes a requirement, feature, code path, guard, field or endpoint. End the line with `Confirmed:` and what changes.
+- End the section with the totals: `no impact: −<N>`, `possible impact: −<P>`, `confirmed impact: −<C>`, and `net: −<N+P+C> lines possible.` For a repo, add `−<D> deps possible`.
 - Count only lines that exist in the diff or the repo. Never report lines saved from code that was never written.
 - If there is nothing to cut, write `Lean already. Ship.` and stop.
 - After the totals, add a Feature Consolidation section with the rule 1 proposals, sorted by lines removed. Every proposal has confirmed impact. If there are no proposals, say so.

@@ -34,7 +34,7 @@ cp SKILL.md ~/.claude/skills/reduce-my-diff/SKILL.md
 
 Run it before implementing to scope the work, or on a finished branch to sweep its diff against main.
 
-Pass PR URLs for a report per PR, scoped to the lines they change, or name a repo to review all its code. Each finding is one line, in the Ponytail review format: the lines it removes, its `path:line`, a tag (`delete`, `reuse`, `stdlib`, `native`, `yagni`, `shrink` or `churn`), what to cut and a concrete replacement. Findings are grouped as **no impact** or **possible / confirmed impact** and sorted by lines removed. Each section ends with the totals for both groups and a `net` line. When there is nothing to cut, the report says `Lean already. Ship.` By default the skill only reports; it doesn't edit, push or comment unless you ask.
+Pass PR URLs for a report per PR, scoped to the lines they change, or name a repo to review all its code. Each finding is one line, in the Ponytail review format: the lines it removes, its `path:line`, a tag (`delete`, `reuse`, `stdlib`, `native`, `yagni`, `shrink` or `churn`), what to cut and a concrete replacement. Findings are grouped as **no impact**, **possible impact** (the agent can't verify the effect) or **confirmed impact** (the agent read the code and the cut changes a feature), and sorted by lines removed. Each section ends with the totals for each group and a `net` line. When there is nothing to cut, the report says `Lean already. Ship.` By default the skill only reports; it doesn't edit, push or comment unless you ask.
 
 A finding with possible or confirmed impact always needs your approval. "Fix everything" skips those findings and lists them for you. If you reject a proposal, the skill builds what you asked for and doesn't propose it again.
 
