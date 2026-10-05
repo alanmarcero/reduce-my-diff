@@ -15,6 +15,16 @@ This skill finds lines to remove. Correctness bugs, security holes and performan
 - **Entire repo**: review all the code. Apply rules 2 to 7 to the code and rule 1 to the features. Also look for a dependency that the standard library or the platform replaces, an interface with one implementation, a factory with one product, a wrapper that only delegates, a file that exports one thing, and a flag or config value that nothing sets.
 - **No target**: review the current branch diff against main.
 
+## Weigh each line by its commit
+
+Unneeded lines hide in large commits: a commit that adds a feature also brings in code nobody asked for. A small commit with one stated purpose, such as a rename, a test-title edit or a quality pass, is a deliberate choice.
+
+- On a PR or branch, read the commits first: `git log --stat --reverse <base>..<head>`. Find the commit behind each hunk with `git blame <base>..<head> -- <file>`.
+- Review the largest commits first. Most findings come from them.
+- Don't flag a change that came in on its own commit when that commit's message names the change. This holds even when it looks like churn.
+- Exception: if a later commit undid that purpose (for example it restored a function the earlier commit removed), the leftover lines are fair game. Name both commits.
+- A single-commit or squashed branch has no history to weigh. Review every line.
+
 ## 0. Before you start
 
 - State your assumptions. If the request has more than one reading and the readings lead to different code, present them instead of picking one silently. If a reading has a sensible default, take it, say so in one line, and continue. If something is unclear and has no default, stop, name the problem, and ask.
@@ -122,6 +132,7 @@ Give each PR, branch or repo its own section:
 
 - Start with the PR link and its size, for example `+127 / −3`. For a repo, start with the repo name and the files reviewed.
 - Write each finding as `−<lines> path:line: <tag>: <what to cut>. <replacement>.` If it spans more than one file, write `<x> files` in place of `path:line` (for example `3 files`).
+- On a PR or branch, end each finding with the short SHA of the commit that added the lines, for example `(425178f6a)`.
 - Give line numbers from the file on the PR's head branch, as `path:line` or `path:start-end`, never the line's position in `gh pr diff` output. Count from the `@@ +start` hunk header or grep the head branch. For a deleted line, give its base-branch number and say so.
 - Use these tags, and make the replacement concrete:
   - `delete`: dead code, unused flexibility, a speculative feature, or a redundant test or comment. Replacement: nothing.
